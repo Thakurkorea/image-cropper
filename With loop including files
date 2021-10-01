@@ -1,5 +1,6 @@
 library(sp)
 library(raster)
+start_time<-Sys.time()
 year='2031'    # change the input year
 input_folder='D:/Thakur/Arcmap_data/IC400_RCP45_skorea_HadGEM3RA_tavg_daily_2031_2040_sub_esr/'       # input layer folder
 output_folder='D:/Thakur/Cropped_files/year'    # output save folder
@@ -14,7 +15,7 @@ for (lr in filenames)
 ne=raster(file.path(input_folder,year,lr))
 #plot(ne)
 # create a random raster over the space:        
-r= raster(xmn=126.314262126,xmx=127.264411495,ymn=37.147152703,ymx=37.624311237,nrow=469,ncol=294)
+r= raster(xmn=126.314262126,xmx=127.264411495,ymn=37.147152703,ymx=37.624311237,nrow=294,ncol=469)
 r[]=1:ncell(r)
 #r=raster('D:/Thakur/Cropped_files/hi.tif')
 
@@ -34,3 +35,5 @@ writeRaster(save_raster,filename = file.path(output_folder,lr),format="GTiff",ov
 #plot(ne,add=TRUE)
 plot(save_raster)
 }
+end_time<-Sys.time()
+end_time-start_time
