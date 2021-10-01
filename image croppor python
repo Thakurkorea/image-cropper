@@ -1,0 +1,15 @@
+## image crop files 
+import os 
+from PIL import Image
+import numpy as np
+dirname = 'tiff_folder_path'
+Save_dirname='tiff_folder_saving_path'
+area=[left, top, right, bottom]
+final = []
+for fname in os.listdir(dirname):
+    im = Image.open(os.path.join(dirname, fname))
+    crop_image=im.crop(area)
+    #imarray = np.array(im)
+    final.append(crop_image)
+    crop_image.save(os.path.join(save_dirname, fname)) #saving the cropped file 
+final = np.asarray(final) # shape = (60000,28,28)
