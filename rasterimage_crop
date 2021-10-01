@@ -1,0 +1,20 @@
+from osgeo import gdal
+import numpy as np
+import matplotlib.pyplot as plt
+ds=gdal.Open('filename.tif')
+array=ds.GetRasterBand(1).ReadAsArray()  # change to array
+# plt.imshow(array) # printing array
+# plt.colorbar()
+# ds.GetGeoTransform()  # to see the orign and pixel (x,pixel width,rowangle,y,y_angle, pixel_height)
+# ds.GetProjection()   # to show the coordinate system
+dsRepj=gdal.Warp('newfile_name.tif',ds,dstSRS="EPSG:4326") # reprojection to new coordinates
+dsRes=gdal.Warp('newfile2.tif',ds,XRes=150,Yres=150,resampleAlg='bilinear')   # resample with resolution 150 x150 
+#pixel with bilinear algorithm
+# make sure your raster data and shapefile have the same projection!
+dsClip = gdal.Warp("demClip.tif", ds, cutlineDSName = "star.shp",
+                   cropToCutline = True, dstNodata = np.nan)        # cut with Star.shp shape file
+# crop from the bounding box
+
+
+# close datasets!
+ds = dsClip = dsRes = dsReprj = None
