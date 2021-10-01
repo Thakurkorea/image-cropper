@@ -1,0 +1,36 @@
+library(sp)
+library(raster)
+year='2031'    # change the input year
+input_folder='D:/Thakur/Arcmap_data/IC400_RCP45_skorea_HadGEM3RA_tavg_daily_2031_2040_sub_esr/'       # input layer folder
+output_folder='D:/Thakur/Cropped_files/year'    # output save folder
+
+#ne=raster('D:/Thakur/Arcmap_data/IC400_RCP45_skorea_HadGEM3RA_tavg_daily_2031_2040_sub_esr/2031/IC400_RCP45_tavg_daily_20310214_sub.esr')
+
+filenames <- list.files(path = file.path(input_folder,year), pattern="*.esr")
+length(filenames)   # check no of files in folder
+for (lr in filenames)
+  {print(lr)
+#ne=raster(file.path(input_folder,year,'IC400_RCP45_tavg_daily_20310214_sub.esr'))
+ne=raster(file.path(input_folder,year,lr))
+#plot(ne)
+# create a random raster over the space:        
+r= raster(xmn=126.314262126,xmx=127.264411495,ymn=37.147152703,ymx=37.624311237,nrow=469,ncol=294)
+r[]=1:ncell(r)
+#r=raster('D:/Thakur/Cropped_files/hi.tif')
+
+
+# plot it with the boundaries we want to clip against:
+#plot(r)
+#plot(ne,add=TRUE)
+
+# now use the mask function
+rr <- crop(ne, r)
+save_raster<-resample(rr, r)
+#writeRaster(save_raster,filename = 'D:/Thakur/Arcmap_data/IC400_RCP45_skorea_HadGEM3RA_tavg_daily_2031_2040_sub_esr/a.tif')
+#a='maau.tif'
+writeRaster(save_raster,filename = file.path(output_folder,lr),format="GTiff",overwrite=TRUE)
+# plot, and overlay:
+#plot(rr);
+#plot(ne,add=TRUE)
+plot(save_raster)
+}
